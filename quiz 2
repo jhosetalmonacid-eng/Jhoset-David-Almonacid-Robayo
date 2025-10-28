@@ -1,0 +1,83 @@
+import java.util.ArrayList;
+
+// Clase base Fruta
+class Fruta {
+    String nombre;
+    int cantidad;
+    double precioUnitario;
+    String tipo;
+    boolean fresco;
+
+    Fruta(String nombre, int cantidad, double precioUnitario, String tipo, boolean fresco) {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.tipo = tipo;
+        this.fresco = fresco;
+    }
+
+    // Método polimórfico para calcular precio total
+    double calcularPrecio() {
+        double total = cantidad * precioUnitario;
+        if (fresco) {
+            total *= 0.9; // 10% de descuento si es fresco
+        }
+        return total;
+    }
+
+    void mostrarInfo() {
+        System.out.println("Nombre: " + nombre +
+                           ", Cantidad: " + cantidad +
+                           ", Precio Unitario: $" + precioUnitario +
+                           ", Tipo: " + tipo +
+                           ", Precio Final: $" + calcularPrecio());
+    }
+}
+
+// Fruta cítrica (herencia)
+class FrutaCitrica extends Fruta {
+    FrutaCitrica(String nombre, int cantidad, double precioUnitario, boolean fresco) {
+        super(nombre, cantidad, precioUnitario, "Cítrica", fresco);
+    }
+
+    @Override
+    double calcularPrecio() {
+        double total = super.calcularPrecio();
+        // Las frutas cítricas tienen un 5% adicional por vitaminas
+        total *= 1.05;
+        return total;
+    }
+}
+
+// Fruta dulce (herencia)
+class FrutaDulce extends Fruta {
+    FrutaDulce(String nombre, int cantidad, double precioUnitario, boolean fresco) {
+        super(nombre, cantidad, precioUnitario, "Dulce", fresco);
+    }
+
+    @Override
+    double calcularPrecio() {
+        double total = super.calcularPrecio();
+        // Las frutas dulces tienen un 2% adicional por calidad
+        total *= 1.02;
+        return total;
+    }
+}
+
+// Clase con el main, sin public
+class Main {
+    public static void main(String[] args) {
+        ArrayList<Fruta> lista = new ArrayList<>();
+
+        lista.add(new FrutaCitrica("Naranja", 10, 1500, true));
+        lista.add(new FrutaDulce("Manzana", 5, 2000, false));
+        lista.add(new FrutaCitrica("Limón", 8, 1000, true));
+        lista.add(new FrutaDulce("Fresa", 12, 500, true));
+        lista.add(new Fruta("Banano", 20, 800, "General", false));
+
+        // Mostrar información de todas las frutas
+        for (Fruta f : lista) {
+            f.mostrarInfo();
+        }
+    }
+}
